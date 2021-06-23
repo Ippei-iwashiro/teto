@@ -1,6 +1,6 @@
-//==========================================================
-// ƒeƒgƒŠƒX(ƒRƒ“ƒ\[ƒ‹)
-//==========================================================
+
+// ãƒ†ãƒˆãƒªã‚¹(ã‚³ãƒ³ã‚½ãƒ¼ãƒ«)
+
 
 #include <stdio.h>
 #include <stdbool.h>
@@ -9,83 +9,78 @@
 #include <conio.h>
 #include <time.h>
 
-//--------------------------------------------------------------------
-//  ƒ}ƒNƒ’è‹`
-//--------------------------------------------------------------------
 
-//--- ƒeƒgƒŠƒX‚ÌƒTƒCƒY
-#define HEIGHT 21    // c
-#define WIDTH  12    // ‰¡
+//  å®šç¾©
 
-//--- ƒuƒƒbƒN‚ÉŠÖ‚·‚éƒ}ƒNƒ
-#define BLOCK_SIZE 4    // ƒuƒƒbƒN‚ÌƒTƒCƒY
-#define X_INIT 4        // ƒuƒƒbƒN‚Ì‰ŠúÀ•W(x)
-#define Y_INIT 0        // ƒuƒƒbƒN‚Ì‰ŠúÀ•W(y)
-#define VARIETY 7       // ƒuƒƒbƒN‚ÌŽí—Þ
 
-/* ŠeƒL[‚Ì•¶ŽšƒR[ƒh */
-//--- –îˆóƒL[(1ƒoƒCƒg–Ú)
-#define ALLOW_KEY_FIRST 224    // Še–îˆóƒL[‚Ì1ƒoƒCƒg–Ú‚Ì•¶ŽšƒR[ƒh‚Í224‚Å‹¤’Ê
-//--- –îˆóƒL[(2ƒoƒCƒg–Ú)
-#define LEFT_KEY  75    // ¶–îˆóƒL[‚Ì•¶ŽšƒR[ƒh
-#define RIGHT_KEY 77    // ‰E–îˆóƒL[‚Ì•¶ŽšƒR[ƒh
-#define DOWN_KEY  80    // ‰º–îˆóƒL[‚Ì•¶ŽšƒR[ƒh
-//--- ƒXƒy[ƒXƒL[
-#define SPACE_KEY 32    // ƒXƒy[ƒXƒL[‚Ì•¶ŽšƒR[ƒh
+//ã‚µã‚¤ã‚º
+#define HEIGHT 21    // ç¸¦
+#define WIDTH  12    // æ¨ª
 
-//--------------------------------------------------------------------
-//  ‘åˆæ’è‹`
-//--------------------------------------------------------------------
+//--- ãƒ–ãƒ­ãƒƒã‚¯ã«é–¢ã™ã‚‹ãƒžã‚¯ãƒ­
+#define BLOCK_SIZE 4    // ãƒ–ãƒ­ãƒƒã‚¯ã®ã‚µã‚¤ã‚º
+#define X_INIT 4        // ãƒ–ãƒ­ãƒƒã‚¯ã®åˆæœŸåº§æ¨™(x)
+#define Y_INIT 0        // ãƒ–ãƒ­ãƒƒã‚¯ã®åˆæœŸåº§æ¨™(y)
+#define VARIETY 7       // ãƒ–ãƒ­ãƒƒã‚¯ã®ç¨®é¡ž
 
-enum { EMPTY = 0, BLOCK = 1, WALL = 9 };    // ŠeƒuƒƒbƒN
+/* å„ã‚­ãƒ¼ã®æ–‡å­—ã‚³ãƒ¼ãƒ‰ */
+//--- çŸ¢å°ã‚­ãƒ¼(1ãƒã‚¤ãƒˆç›®)
+#define ALLOW_KEY_FIRST 224    // å„çŸ¢å°ã‚­ãƒ¼ã®1ãƒã‚¤ãƒˆç›®ã®æ–‡å­—ã‚³ãƒ¼ãƒ‰ã¯224ã§å…±é€š
+//--- çŸ¢å°ã‚­ãƒ¼(2ãƒã‚¤ãƒˆç›®)
+#define LEFT_KEY  75    // å·¦çŸ¢å°ã‚­ãƒ¼ã®æ–‡å­—ã‚³ãƒ¼ãƒ‰
+#define RIGHT_KEY 77    // å³çŸ¢å°ã‚­ãƒ¼ã®æ–‡å­—ã‚³ãƒ¼ãƒ‰
+#define DOWN_KEY  80    // ä¸‹çŸ¢å°ã‚­ãƒ¼ã®æ–‡å­—ã‚³ãƒ¼ãƒ‰
+//--- ã‚¹ãƒšãƒ¼ã‚¹ã‚­ãƒ¼
+#define SPACE_KEY 32    // ã‚¹ãƒšãƒ¼ã‚¹ã‚­ãƒ¼ã®æ–‡å­—ã‚³ãƒ¼ãƒ‰
 
-//--------------------------------------------------------------------
-//  ‘åˆæéŒ¾
-//--------------------------------------------------------------------
 
-//--- ƒtƒB[ƒ‹ƒh‚ÆƒXƒe[ƒW
-int field[HEIGHT][WIDTH];    // ƒtƒB[ƒ‹ƒh
-int stage[HEIGHT][WIDTH];    // ƒXƒe[ƒW
 
-//--- ƒuƒƒbƒN‚ÌéŒ¾
-/* —á(1Ží—Þ–Ú)
-     ¡                                 
-     ¡    ‰E‚É90“x‰ñ“]‚³‚¹‚é‚Æ¨   ¡¡¡¡
-     ¡                                 
-     ¡                                 
+enum { EMPTY = 0, BLOCK = 1, WALL = 9 };    // å„ãƒ–ãƒ­ãƒƒã‚¯
+
+
+//--- ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã¨ã‚¹ãƒ†ãƒ¼ã‚¸
+int field[HEIGHT][WIDTH];    // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
+int stage[HEIGHT][WIDTH];    // ã‚¹ãƒ†ãƒ¼ã‚¸
+
+//--- ãƒ–ãƒ­ãƒƒã‚¯ã®å®£è¨€
+/* ä¾‹(1ç¨®é¡žç›®)
+    â–¡â– â–¡â–¡                           â–¡â–¡â–¡â–¡
+    â–¡â– â–¡â–¡  å³ã«90åº¦å›žè»¢ã•ã›ã‚‹ã¨â†’   â– â– â– â– 
+    â–¡â– â–¡â–¡                           â–¡â–¡â–¡â–¡
+    â–¡â– â–¡â–¡                           â–¡â–¡â–¡â–¡
 */
 int blockList[VARIETY][BLOCK_SIZE][BLOCK_SIZE] = {
-    //--- c–_
+    //--- ç¸¦æ£’
     {{ EMPTY, BLOCK, EMPTY, EMPTY },
      { EMPTY, BLOCK, EMPTY, EMPTY },
      { EMPTY, BLOCK, EMPTY, EMPTY },
      { EMPTY, BLOCK, EMPTY, EMPTY }},
-     //--- ³•ûŒ`
+     //--- æ­£æ–¹å½¢
      {{ EMPTY, EMPTY, EMPTY, EMPTY },
       { EMPTY, BLOCK, BLOCK, EMPTY },
       { EMPTY, BLOCK, BLOCK, EMPTY },
       { EMPTY, EMPTY, EMPTY, EMPTY }},
-      //--- ˆîÈŒ^
+      //--- ç¨²å¦»åž‹
       {{ EMPTY, BLOCK, EMPTY, EMPTY },
        { EMPTY, BLOCK, BLOCK, EMPTY },
        { EMPTY, EMPTY, BLOCK, EMPTY },
        { EMPTY, EMPTY, EMPTY, EMPTY }},
-       //--- ‹tˆîÈŒ^
+       //--- é€†ç¨²å¦»åž‹
        {{ EMPTY, EMPTY, BLOCK, EMPTY },
         { EMPTY, BLOCK, BLOCK, EMPTY },
         { EMPTY, BLOCK, EMPTY, EMPTY },
         { EMPTY, EMPTY, EMPTY, EMPTY }},
-        //--- LŽšŒ^
+        //--- Lå­—åž‹
         {{ EMPTY, BLOCK, EMPTY, EMPTY },
          { EMPTY, BLOCK, EMPTY, EMPTY },
          { EMPTY, BLOCK, BLOCK, EMPTY },
          { EMPTY, EMPTY, EMPTY, EMPTY }},
-         //--- ‹tLŽšŒ^
+         //--- é€†Lå­—åž‹
          {{ EMPTY, EMPTY, BLOCK, EMPTY },
           { EMPTY, EMPTY, BLOCK, EMPTY },
           { EMPTY, BLOCK, BLOCK, EMPTY },
           { EMPTY, EMPTY, EMPTY, EMPTY }},
-          //--- ‹tTŽšŒ^
+          //--- é€†Tå­—åž‹
           {{ EMPTY, BLOCK, EMPTY, EMPTY },
            { BLOCK, BLOCK, BLOCK, EMPTY },
            { EMPTY, EMPTY, EMPTY, EMPTY },
@@ -93,68 +88,65 @@ int blockList[VARIETY][BLOCK_SIZE][BLOCK_SIZE] = {
 };
 int block[BLOCK_SIZE][BLOCK_SIZE];
 
-//--- —Ž‰ºƒuƒƒbƒN‚ÌÀ•W
+//--- è½ä¸‹ãƒ–ãƒ­ãƒƒã‚¯ã®åº§æ¨™
 int x = X_INIT;
 int y = Y_INIT;
 
-//--- ƒQ[ƒ€ƒI[ƒo[ƒtƒ‰ƒO
+//--- ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼ãƒ•ãƒ©ã‚°
 int gameOver = false;
 
-//--- Á‹Ž‚µ‚½ƒ‰ƒCƒ“”‚Ì‡Œv
+//--- æ¶ˆåŽ»ã—ãŸãƒ©ã‚¤ãƒ³æ•°ã®åˆè¨ˆ
 int totalLines = 0;
 
 //--------------------------------------------------------------------
-//  ŠÖ”Œ´Œ^éŒ¾
+//  é–¢æ•°åŽŸåž‹å®£è¨€
 //--------------------------------------------------------------------
 
-void screenInit(void);                        // ‰æ–Ê‚Ì‰Šú‰»
-void createBlock(void);                       // —Ž‰º—pƒuƒƒbƒN‚Ì¶¬
-void showGameField(void);                     // ƒtƒB[ƒ‹ƒh‚Ì•`‰æ
-void moveBlock(int xNext, int yNext);         // ƒuƒƒbƒN‚ÌˆÚ“®
-bool checkCollision(int xNext, int yNext);    // ƒuƒƒbƒN‚ÌÕ“Ë”»’è
-void lockBlock(void);                         // ƒuƒƒbƒN‚ÌŒÅ’è
-void controlBlock(void);                      // ƒuƒƒbƒN‚ÌƒRƒ“ƒgƒ[ƒ‹
-void turnBlock(void);                         // ƒuƒƒbƒN‚Ì‰ñ“]
-void checkLines(void);                        // ƒ‰ƒCƒ“‚ÌÁ‹Ž”»’è
-void deleteLine(int line);                    // ‰¡1—ñ‚ÌÁ‹Ž • stage‘S‘Ì‚ð1’i‰º‚É‚¸‚ç‚·
-void processBlock(void);                      // ƒuƒƒbƒN‚ÉŠÖ‚·‚éˆ—
+void screenInit(void);                        // ç”»é¢ã®åˆæœŸåŒ–
+void createBlock(void);                       // è½ä¸‹ç”¨ãƒ–ãƒ­ãƒƒã‚¯ã®ç”Ÿæˆ
+void showGameField(void);                     // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã®æç”»
+void moveBlock(int xNext, int yNext);         // ãƒ–ãƒ­ãƒƒã‚¯ã®ç§»å‹•
+bool checkCollision(int xNext, int yNext);    // ãƒ–ãƒ­ãƒƒã‚¯ã®è¡çªåˆ¤å®š
+void lockBlock(void);                         // ãƒ–ãƒ­ãƒƒã‚¯ã®å›ºå®š
+void controlBlock(void);                      // ãƒ–ãƒ­ãƒƒã‚¯ã®ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«
+void turnBlock(void);                         // ãƒ–ãƒ­ãƒƒã‚¯ã®å›žè»¢
+void checkLines(void);                        // ãƒ©ã‚¤ãƒ³ã®æ¶ˆåŽ»åˆ¤å®š
+void deleteLine(int line);                    // æ¨ª1åˆ—ã®æ¶ˆåŽ» ï¼† stageå…¨ä½“ã‚’1æ®µä¸‹ã«ãšã‚‰ã™
+void processBlock(void);                      // ãƒ–ãƒ­ãƒƒã‚¯ã«é–¢ã™ã‚‹å‡¦ç†
 
-//====================================================================
-//  –{‘Ìˆ—
-//====================================================================
 
 //--------------------------------------------------------------------
-//  mainŠÖ”
+//  mainé–¢æ•°
 //--------------------------------------------------------------------
 
 int main(void)
 {
     int sleepTime = 0;
 
-    srand((unsigned)time(NULL));    // ƒuƒƒbƒN¶¬—p‚Ì—”‚ÌƒV[ƒh‚ðÝ’è
-    screenInit();       // ‰æ–Ê‚Ì‰Šú‰»
-    createBlock();      // ƒuƒƒbƒN‚Ì¶¬
-    showGameField();    // ƒtƒB[ƒ‹ƒh‚Ì•`‰æ
-    Sleep(500);         // ƒuƒƒbƒN‚ð¶¬‚µ‚½‚çAˆê“x‚»‚±‚Å‰æ–Ê‚ðŽ~‚ß‚Äl‚¦‚éŽžŠÔ‚ð‚Â‚­‚é
+    srand((unsigned)time(NULL));    // ãƒ–ãƒ­ãƒƒã‚¯ç”Ÿæˆç”¨ã®ä¹±æ•°ã®ã‚·ãƒ¼ãƒ‰ã‚’è¨­å®š
+    screenInit();       // ç”»é¢ã®åˆæœŸåŒ–
+    createBlock();      // ãƒ–ãƒ­ãƒƒã‚¯ã®ç”Ÿæˆ
+    showGameField();    // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã®æç”»
+    Sleep(500);         // ãƒ–ãƒ­ãƒƒã‚¯ã‚’ç”Ÿæˆã—ãŸã‚‰ã€ä¸€åº¦ãã“ã§ç”»é¢ã‚’æ­¢ã‚ã¦è€ƒãˆã‚‹æ™‚é–“ã‚’ã¤ãã‚‹
 
-    //--- ƒQ[ƒ€ƒI[ƒo[‚Ü‚Åˆ—‚ðŒp‘±
+    //--- ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼ã¾ã§å‡¦ç†ã‚’ç¶™ç¶š
     while (1) {
         if (gameOver) {
             system("cls");
             printf("\n\nGAME OVER\n\n");
             break;
         }
-        //--- “ü—Íƒ`ƒFƒbƒN
-        if (_kbhit()) {    // “ü—Í‚ª‚ ‚é‚È‚ç‚Î
+        //--- å…¥åŠ›ãƒã‚§ãƒƒã‚¯
+        if (_kbhit()) {    // å…¥åŠ›ãŒã‚ã‚‹ãªã‚‰ã°
             controlBlock();
         }
-        //--- time‚ª6ç–œ‚É‚È‚é‚Ü‚ÅˆÈ~‚Ìˆ—‚ðs‚í‚È‚¢(ˆ—‚Ì‹xŽ~‚É‘Š“–)
+        //--- timeãŒ6åƒä¸‡ã«ãªã‚‹ã¾ã§ä»¥é™ã®å‡¦ç†ã‚’è¡Œã‚ãªã„(å‡¦ç†ã®ä¼‘æ­¢ã«ç›¸å½“)
         while (sleepTime < 60000000) {
             sleepTime++;
             continue;
         }
-        processBlock();      // ƒuƒƒbƒN‚ÉŠÖ‚·‚éˆ—
-        showGameField();     // ƒtƒB[ƒ‹ƒh‚Ì•`‰æ
+        processBlock();      // ãƒ–ãƒ­ãƒƒã‚¯ã«é–¢ã™ã‚‹å‡¦ç†
+        showGameField();     // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã®æç”»
         sleepTime = 0;
     }
 
@@ -162,14 +154,14 @@ int main(void)
 }
 
 //--------------------------------------------------------------------
-//  ‰æ–Ê‚Ì‰Šú‰»
+//  ç”»é¢ã®åˆæœŸåŒ–
 //--------------------------------------------------------------------
 
 void screenInit(void)
 {
     int i, j;
 
-    //--- stage‚Æfield‚ÉŠeƒuƒƒbƒN‚Ì”’l‚ð‘ã“ü
+    //--- stageã¨fieldã«å„ãƒ–ãƒ­ãƒƒã‚¯ã®æ•°å€¤ã‚’ä»£å…¥
     for (i = 0; i < HEIGHT; i++) {
         for (j = 0; j < WIDTH; j++) {
             if (i == HEIGHT - 1 || j == 0 || j == WIDTH - 1) {
@@ -183,7 +175,7 @@ void screenInit(void)
 }
 
 //--------------------------------------------------------------------
-//  —Ž‰º—pƒuƒƒbƒN‚Ì¶¬
+//  è½ä¸‹ç”¨ãƒ–ãƒ­ãƒƒã‚¯ã®ç”Ÿæˆ
 //--------------------------------------------------------------------
 
 void createBlock(void)
@@ -192,19 +184,19 @@ void createBlock(void)
     int i, j;
 
     blockType = rand() % VARIETY;
-    //--- ¶¬‚·‚éƒuƒƒbƒN‚ðƒuƒƒbƒNƒŠƒXƒg‚©‚ç“Ç‚Ýž‚Þ
+    //--- ç”Ÿæˆã™ã‚‹ãƒ–ãƒ­ãƒƒã‚¯ã‚’ãƒ–ãƒ­ãƒƒã‚¯ãƒªã‚¹ãƒˆã‹ã‚‰èª­ã¿è¾¼ã‚€
     for (i = 0; i < BLOCK_SIZE; i++) {
         for (j = 0; j < BLOCK_SIZE; j++) {
             block[i][j] = blockList[blockType][i][j];
         }
     }
 
-    //--- ¶¬‚µ‚½ƒuƒƒbƒN‚ðƒtƒB[ƒ‹ƒh‚É“Ç‚Ýž‚Þ
+    //--- ç”Ÿæˆã—ãŸãƒ–ãƒ­ãƒƒã‚¯ã‚’ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã«èª­ã¿è¾¼ã‚€
     for (i = 0; i < BLOCK_SIZE; i++) {
         for (j = 0; j < BLOCK_SIZE; j++) {
             field[i + Y_INIT][j + X_INIT] = stage[i + Y_INIT][j + X_INIT] + block[i][j];
             printf("%d\n", stage[i + Y_INIT][j + X_INIT]);
-            //--- ‰ŠúˆÊ’u‚É¶¬‚³‚ê‚½ƒuƒƒbƒN‚ªŒÅ’èƒuƒƒbƒN‚Éd‚È‚Á‚Ä‚¢‚ê‚ÎƒQ[ƒ€ƒI[ƒo[
+            //--- åˆæœŸä½ç½®ã«ç”Ÿæˆã•ã‚ŒãŸãƒ–ãƒ­ãƒƒã‚¯ãŒå›ºå®šãƒ–ãƒ­ãƒƒã‚¯ã«é‡ãªã£ã¦ã„ã‚Œã°ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼
             if (field[i + Y_INIT][j + X_INIT] > BLOCK) {
                 gameOver = true;
                 return;
@@ -214,17 +206,17 @@ void createBlock(void)
 }
 
 //--------------------------------------------------------------------
-//  ƒtƒB[ƒ‹ƒh‚Ì•`‰æ
+//  ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã®æç”»
 //--------------------------------------------------------------------
 
 void showGameField(void)
 {
     int i, j;
 
-    //--- ‰æ–Ê‚ÌƒNƒŠƒA
+    //--- ç”»é¢ã®ã‚¯ãƒªã‚¢
     system("cls");
 
-    //--- ƒtƒB[ƒ‹ƒh‚Ì•`‰æ
+    //--- ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã®æç”»
     for (i = 0; i < HEIGHT; i++) {
         for (j = 0; j < WIDTH; j++) {
             switch (field[i][j]) {
@@ -232,10 +224,10 @@ void showGameField(void)
                 printf("  ");
                 break;
             case WALL:
-                printf("¡");
+                printf("â– ");
                 break;
             case BLOCK:
-                printf(" ");
+                printf("â–¡");
             }
         }
         printf("\n");
@@ -244,25 +236,25 @@ void showGameField(void)
 }
 
 //--------------------------------------------------------------------
-//  ƒuƒƒbƒN‚ÌˆÚ“®
+//  ãƒ–ãƒ­ãƒƒã‚¯ã®ç§»å‹•
 //--------------------------------------------------------------------
 
 void moveBlock(int xNext, int yNext)
 {
     int i, j;
 
-    //--- —Ž‰º’¼‘O‚ÌƒuƒƒbƒN‚ðÁ‹Ž
+    //--- è½ä¸‹ç›´å‰ã®ãƒ–ãƒ­ãƒƒã‚¯ã‚’æ¶ˆåŽ»
     for (i = 0; i < BLOCK_SIZE; i++) {
         for (j = 0; j < BLOCK_SIZE; j++) {
             field[i + y][j + x] -= block[i][j];
         }
     }
 
-    //--- ƒuƒƒbƒN‚ÌÀ•W‚ðXV
+    //--- ãƒ–ãƒ­ãƒƒã‚¯ã®åº§æ¨™ã‚’æ›´æ–°
     x = xNext;
     y = yNext;
 
-    // V‹KÀ•W‚ðƒtƒB[ƒ‹ƒh‚ÉÝ’è
+    // æ–°è¦åº§æ¨™ã‚’ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã«è¨­å®š
     for (i = 0; i < BLOCK_SIZE; i++) {
         for (j = 0; j < BLOCK_SIZE; j++) {
             field[i + y][j + x] += block[i][j];
@@ -271,37 +263,37 @@ void moveBlock(int xNext, int yNext)
 }
 
 //--------------------------------------------------------------------
-//  ƒuƒƒbƒN‚ÌÕ“Ë”»’è
+//  ãƒ–ãƒ­ãƒƒã‚¯ã®è¡çªåˆ¤å®š
 //--------------------------------------------------------------------
 
 bool checkCollision(int xNext, int yNext)
 {
     int i, j;
 
-    //--- •ÇorŒÅ’èƒuƒƒbƒN‚ÌÕ“Ë”»’è
+    //--- å£orå›ºå®šãƒ–ãƒ­ãƒƒã‚¯ã®è¡çªåˆ¤å®š
     for (i = 0; i < BLOCK_SIZE; i++) {
         for (j = 0; j < BLOCK_SIZE; j++) {
-            //--- ƒuƒƒbƒN‚È‚ç‚Î
+            //--- ãƒ–ãƒ­ãƒƒã‚¯ãªã‚‰ã°
             if (block[i][j] == BLOCK) {
-                //--- ˆÚ“®æÀ•W‚ª‹ó‚Å‚È‚¢‚È‚ç‚Î(•ÇorŒÅ’èƒuƒƒbƒN‚È‚ç‚Î)ˆÚ“®‚Å‚«‚È‚¢
+                //--- ç§»å‹•å…ˆåº§æ¨™ãŒç©ºã§ãªã„ãªã‚‰ã°(å£orå›ºå®šãƒ–ãƒ­ãƒƒã‚¯ãªã‚‰ã°)ç§»å‹•ã§ããªã„
                 if (stage[i + yNext][j + xNext] != EMPTY) {
                     return false;
                 }
             }
         }
     }
-    return true;    // ˆÚ“®‚Å‚«‚é
+    return true;    // ç§»å‹•ã§ãã‚‹
 }
 
 //--------------------------------------------------------------------
-//  ƒuƒƒbƒN‚ÌŒÅ’è
+//  ãƒ–ãƒ­ãƒƒã‚¯ã®å›ºå®š
 //--------------------------------------------------------------------
 
 void lockBlock(void)
 {
     int i, j;
 
-    //--- ƒuƒƒbƒN‚ÌŒÅ’è
+    //--- ãƒ–ãƒ­ãƒƒã‚¯ã®å›ºå®š
     for (i = 0; i < HEIGHT; i++) {
         for (j = 0; j < WIDTH; j++) {
             stage[i][j] = field[i][j];
@@ -310,14 +302,14 @@ void lockBlock(void)
 }
 
 //--------------------------------------------------------------------
-//  ƒuƒƒbƒN‚ÌƒRƒ“ƒgƒ[ƒ‹
+//  ãƒ–ãƒ­ãƒƒã‚¯ã®ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«
 //--------------------------------------------------------------------
 
 void controlBlock(void)
 {
     int key;
 
-    //--- –îˆóƒL[‚Ì•¶ŽšƒR[ƒh‚Í2ƒoƒCƒg(Å‰‚Éu224vA‚»‚ÌŽŸ‚ÉŠeƒL[‚ð•\‚·”’l‚ª‚ ‚é)‚È‚Ì‚ÅA2’iŠK‚É•ª‚¯‚ÄŽæ“¾
+    //--- çŸ¢å°ã‚­ãƒ¼ã®æ–‡å­—ã‚³ãƒ¼ãƒ‰ã¯2ãƒã‚¤ãƒˆ(æœ€åˆã«ã€Œ224ã€ã€ãã®æ¬¡ã«å„ã‚­ãƒ¼ã‚’è¡¨ã™æ•°å€¤ãŒã‚ã‚‹)ãªã®ã§ã€2æ®µéšŽã«åˆ†ã‘ã¦å–å¾—
     key = _getch();
     if (key == ALLOW_KEY_FIRST) { key = _getch(); }
 
@@ -344,7 +336,7 @@ void controlBlock(void)
 }
 
 //--------------------------------------------------------------------
-//  ƒuƒƒbƒN‚Ì‰ñ“]
+//  ãƒ–ãƒ­ãƒƒã‚¯ã®å›žè»¢
 //--------------------------------------------------------------------
 
 void turnBlock(void)
@@ -352,22 +344,22 @@ void turnBlock(void)
     int tmp[BLOCK_SIZE][BLOCK_SIZE];
     int i, j;
 
-    //--- ‰ñ“]‘O‚ÌƒuƒƒbƒN‚ðˆêŽž“I‚É•Û‘¶
+    //--- å›žè»¢å‰ã®ãƒ–ãƒ­ãƒƒã‚¯ã‚’ä¸€æ™‚çš„ã«ä¿å­˜
     for (i = 0; i < BLOCK_SIZE; i++) {
         for (j = 0; j < BLOCK_SIZE; j++) {
             tmp[i][j] = block[i][j];
         }
     }
 
-    //--- ƒuƒƒbƒN‚ð‰ñ“]
+    //--- ãƒ–ãƒ­ãƒƒã‚¯ã‚’å›žè»¢
     for (i = 0; i < BLOCK_SIZE; i++) {
         for (j = 0; j < BLOCK_SIZE; j++) {
-            // xÀ•W‚ÆyÀ•W‚ð“ü‚ê‘Ö‚¦‚ÄAyÀ•W‚Ì’l‚ðŒã‚ë‚©‚çŽæ“¾
+            // xåº§æ¨™ã¨yåº§æ¨™ã‚’å…¥ã‚Œæ›¿ãˆã¦ã€yåº§æ¨™ã®å€¤ã‚’å¾Œã‚ã‹ã‚‰å–å¾—
             block[i][j] = tmp[(BLOCK_SIZE - 1) - j][i];
         }
     }
 
-    //--- ‰ñ“]Œã‚ÌƒuƒƒbƒN‚ª•ÇorŒÅ’èƒuƒƒbƒN‚ÉÕ“Ë‚·‚é‚È‚ç‚ÎA‰ñ“]‘O‚É–ß‚µ‚Äˆ—‚ð’†Ž~
+    //--- å›žè»¢å¾Œã®ãƒ–ãƒ­ãƒƒã‚¯ãŒå£orå›ºå®šãƒ–ãƒ­ãƒƒã‚¯ã«è¡çªã™ã‚‹ãªã‚‰ã°ã€å›žè»¢å‰ã«æˆ»ã—ã¦å‡¦ç†ã‚’ä¸­æ­¢
     if (checkCollision(x, y) == false) {
         for (i = 0; i < BLOCK_SIZE; i++) {
             for (j = 0; j < BLOCK_SIZE; j++) {
@@ -377,7 +369,7 @@ void turnBlock(void)
         return;
     }
 
-    //--- ‰ñ“]‘O‚ÌƒuƒƒbƒN‚ðfield‚©‚çÁ‚µ‚ÄA‰ñ“]Œã‚ÌƒuƒƒbƒN‚ðfield‚ÉÝ’è
+    //--- å›žè»¢å‰ã®ãƒ–ãƒ­ãƒƒã‚¯ã‚’fieldã‹ã‚‰æ¶ˆã—ã¦ã€å›žè»¢å¾Œã®ãƒ–ãƒ­ãƒƒã‚¯ã‚’fieldã«è¨­å®š
     for (i = 0; i < BLOCK_SIZE; i++) {
         for (j = 0; j < BLOCK_SIZE; j++) {
             field[i + y][j + x] = block[i][j];
@@ -386,55 +378,55 @@ void turnBlock(void)
 }
 
 //--------------------------------------------------------------------
-//  ƒ‰ƒCƒ“‚ÌÁ‹Ž”»’è
+//  ãƒ©ã‚¤ãƒ³ã®æ¶ˆåŽ»åˆ¤å®š
 //--------------------------------------------------------------------
 
 void checkLines(void)
 {
-    int lines = 0;    // “¯Žž‚ÉÁ‚µ‚½ƒ‰ƒCƒ“”
+    int lines = 0;    // åŒæ™‚ã«æ¶ˆã—ãŸãƒ©ã‚¤ãƒ³æ•°
     bool complete;
     int i, j;
 
-    for (i = 0; i < HEIGHT - 1; i++) {       // ‰º’[‚Ìs‚Í‘–¸‚µ‚È‚¢(•Ç‚¾‚©‚ç)
+    for (i = 0; i < HEIGHT - 1; i++) {       // ä¸‹ç«¯ã®è¡Œã¯èµ°æŸ»ã—ãªã„(å£ã ã‹ã‚‰)
         complete = true;
-        for (j = 1; j < WIDTH - 1; j++) {    // —¼’[‚Ì—ñ‚Í‘–¸‚µ‚È‚¢(•Ç‚¾‚©‚ç)
+        for (j = 1; j < WIDTH - 1; j++) {    // ä¸¡ç«¯ã®åˆ—ã¯èµ°æŸ»ã—ãªã„(å£ã ã‹ã‚‰)
             if (stage[i][j] == EMPTY) {
                 complete = false;
-                break;                       // ŽŸ‚Ìs‚Ö
+                break;                       // æ¬¡ã®è¡Œã¸
             }
         }
-        if (complete == true) {    // ‰¡1—ñ‚ªƒ‰ƒCƒ“‚É‚È‚Á‚Ä‚¢‚é‚È‚ç‚Î
-            //--- ‰¡1—ñ‚ÌÁ‹Ž • stage‘S‘Ì‚ð1’i‰º‚É‚¸‚ç‚·
+        if (complete == true) {    // æ¨ª1åˆ—ãŒãƒ©ã‚¤ãƒ³ã«ãªã£ã¦ã„ã‚‹ãªã‚‰ã°
+            //--- æ¨ª1åˆ—ã®æ¶ˆåŽ» ï¼† stageå…¨ä½“ã‚’1æ®µä¸‹ã«ãšã‚‰ã™
             deleteLine(i);
             lines++;
         }
     }
 
-    //--- Á‚µ‚½ƒ‰ƒCƒ“”‚ð‰ÁŽZ‚µ‚Ä‚¢‚­
+    //--- æ¶ˆã—ãŸãƒ©ã‚¤ãƒ³æ•°ã‚’åŠ ç®—ã—ã¦ã„ã
     totalLines += lines;
 }
 
 //--------------------------------------------------------------------
-// ‰¡1—ñ‚ÌÁ‹Ž • stage‘S‘Ì‚ð1’i‰º‚É‚¸‚ç‚·
+// æ¨ª1åˆ—ã®æ¶ˆåŽ» ï¼† stageå…¨ä½“ã‚’1æ®µä¸‹ã«ãšã‚‰ã™
 //--------------------------------------------------------------------
 
 void deleteLine(int line)
 {
     int i, j;
 
-    //--- ‰¡1—ñ‚ðÁ‹Ž
+    //--- æ¨ª1åˆ—ã‚’æ¶ˆåŽ»
     for (j = 1; j < WIDTH - 1; j++) {
         stage[line][j] = EMPTY;
     }
 
-    //--- stage‘S‘Ì‚ð1’i‰º‚É‚¸‚ç‚·
+    //--- stageå…¨ä½“ã‚’1æ®µä¸‹ã«ãšã‚‰ã™
     for (i = line; i > 0; i--) {
         for (j = 1; j < WIDTH - 1; j++) {
             stage[i][j] = stage[i - 1][j];
         }
     }
 
-    //--- stage‚Ìî•ñ‚ðfield‚É”½‰f
+    //--- stageã®æƒ…å ±ã‚’fieldã«åæ˜ 
     for (i = 0; i < HEIGHT; i++) {
         for (j = 0; j < WIDTH; j++) {
             field[i][j] = stage[i][j];
@@ -443,21 +435,21 @@ void deleteLine(int line)
 }
 
 //--------------------------------------------------------------------
-// ƒuƒƒbƒN‚ÉŠÖ‚·‚éˆ—
+// ãƒ–ãƒ­ãƒƒã‚¯ã«é–¢ã™ã‚‹å‡¦ç†
 //--------------------------------------------------------------------
 
 void processBlock(void)
 {
-    if (checkCollision(x, y + 1)) {    // ŽŸ‚ÌÀ•W‚ÉˆÚ“®‚µ‚½‚Æ‚«‚ÉÕ“Ë‚µ‚È‚¢‚È‚ç‚Î
-        moveBlock(x, y + 1);    // ƒuƒƒbƒN‚ð1À•W‰º‚ÉˆÚ“®
+    if (checkCollision(x, y + 1)) {    // æ¬¡ã®åº§æ¨™ã«ç§»å‹•ã—ãŸã¨ãã«è¡çªã—ãªã„ãªã‚‰ã°
+        moveBlock(x, y + 1);    // ãƒ–ãƒ­ãƒƒã‚¯ã‚’1åº§æ¨™ä¸‹ã«ç§»å‹•
     }
-    else {                  // Õ“Ë‚·‚é‚È‚ç‚Î
-        lockBlock();          // ƒuƒƒbƒN‚ÌŒÅ’è
-        checkLines();         // ƒ‰ƒCƒ“‚ÌÁ‹Ž”»’è
-        x = X_INIT;           // x‚ð‰ŠúÀ•W‚É–ß‚·
-        y = Y_INIT;           // y‚ð‰ŠúÀ•W‚É–ß‚·
-        createBlock();        // —Ž‰º—pƒuƒƒbƒN‚Ì¶¬
-        showGameField();      // ƒtƒB[ƒ‹ƒh‚Ì•`‰æ
-        Sleep(500);           // ƒuƒƒbƒN‚ð¶¬‚µ‚½‚çAˆê“x‚»‚±‚Å‰æ–Ê‚ðŽ~‚ß‚Äl‚¦‚éŽžŠÔ‚ð‚Â‚­‚é
+    else {                  // è¡çªã™ã‚‹ãªã‚‰ã°
+        lockBlock();          // ãƒ–ãƒ­ãƒƒã‚¯ã®å›ºå®š
+        checkLines();         // ãƒ©ã‚¤ãƒ³ã®æ¶ˆåŽ»åˆ¤å®š
+        x = X_INIT;           // xã‚’åˆæœŸåº§æ¨™ã«æˆ»ã™
+        y = Y_INIT;           // yã‚’åˆæœŸåº§æ¨™ã«æˆ»ã™
+        createBlock();        // è½ä¸‹ç”¨ãƒ–ãƒ­ãƒƒã‚¯ã®ç”Ÿæˆ
+        showGameField();      // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã®æç”»
+        Sleep(500);           // ãƒ–ãƒ­ãƒƒã‚¯ã‚’ç”Ÿæˆã—ãŸã‚‰ã€ä¸€åº¦ãã“ã§ç”»é¢ã‚’æ­¢ã‚ã¦è€ƒãˆã‚‹æ™‚é–“ã‚’ã¤ãã‚‹
     }
 }
